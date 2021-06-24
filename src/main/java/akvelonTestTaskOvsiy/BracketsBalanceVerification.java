@@ -15,10 +15,6 @@ public class BracketsBalanceVerification {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String SPACE = "space";
 
-    /**
-     * Note! If the sequence of brackets is unbalanced,
-     * the brackets are numbered starting at zero.
-     */
     public int verifyBracketsBalance(String input) {
 
         int result = 0;
