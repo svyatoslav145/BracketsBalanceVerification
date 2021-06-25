@@ -5,7 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static akvelonTestTaskOvsiy.BracketsBalanceVerification.INPUT_PATTERN;
 import static org.junit.jupiter.api.Assertions.*;
@@ -82,8 +85,8 @@ class BracketsBalanceVerificationTest {
     @ParameterizedTest
     @MethodSource("createWrongBracketSequences")
     @DisplayName("Pattern test with wrong symbols in bracket sequences")
-    void testBracketSequenceRegexp_whenBracketSequencesWrong(String correctSequence) {
-        assertFalse(correctSequence.matches(String.valueOf(INPUT_PATTERN)));
+    void testBracketSequenceRegexp_whenBracketSequencesWrong(String wrongSequence) {
+        assertFalse(wrongSequence.matches(String.valueOf(INPUT_PATTERN)));
     }
 
     private List<String> balancedBracketSequences() {
@@ -104,10 +107,23 @@ class BracketsBalanceVerificationTest {
     }
 
     private static List<String> createWrongBracketSequences() {
-        return List.of("{} ()[]",
-                "{{}}((a))[[]]",
-                "{{(())}}_[[(){[]}]]",
-                "}}}(((]]#](((",
-                "(((~%]]]@{{{");
+        List<String> wrongBracketSequences;
+
+        String allowedSymbols = "{}()[]";
+
+        List<Character> prohibitedCharacters = new ArrayList<>();
+
+        IntStream.range(' ', '(').forEach(c -> prohibitedCharacters.add((char) c));
+        IntStream.range('*', '[').forEach(c -> prohibitedCharacters.add((char) c));
+        IntStream.range('\\', ']').forEach(c -> prohibitedCharacters.add((char) c));
+        IntStream.range('^', '{').forEach(c -> prohibitedCharacters.add((char) c));
+        IntStream.range('|', '}').forEach(c -> prohibitedCharacters.add((char) c));
+        IntStream.range('~', '\u0080').forEach(c -> prohibitedCharacters.add((char) c));
+
+        wrongBracketSequences = prohibitedCharacters.stream()
+                .map(character -> allowedSymbols.concat(String.valueOf(character)))
+                .collect(Collectors.toList());
+
+        return wrongBracketSequences;
     }
 }
