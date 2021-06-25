@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BracketsBalanceVerificationTest {
 
-    public static final String EMPTY_STRING = "";
-    public static final String INCORRECT_BRACKET_SEQUENCE = "()a_c[]# W";
-    public static final String WRONG_FOURTH_BRACKET = "{[(]}";
-    public static final String WRONG_FIRST_BRACKET = ")[]{}(";
+    private static final String EMPTY_STRING = "";
+    private static final String INCORRECT_BRACKET_SEQUENCE = "()a_c[]# W";
+    private static final String WRONG_FOURTH_BRACKET = "{[(]}";
+    private static final String WRONG_FIRST_BRACKET = ")[]{}(";
     private final BracketsBalanceVerification bracketsBalanceVerification =
             new BracketsBalanceVerification();
 
