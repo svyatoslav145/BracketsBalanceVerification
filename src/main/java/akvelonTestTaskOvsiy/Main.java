@@ -1,16 +1,27 @@
 package akvelonTestTaskOvsiy;
 
+import static akvelonTestTaskOvsiy.VerifierType.TYPE_ROUND;
+import static akvelonTestTaskOvsiy.VerifierType.TYPE_ROUND_SQUARE_CURLY;
+
 public class Main {
 
     public static void main(String[] args) {
-        BracketsBalanceVerification bracketsBalanceVerification =
-                new BracketsBalanceVerification();
 
-        bracketsBalanceVerification.verifyBracketsBalance("");
-        bracketsBalanceVerification.verifyBracketsBalance("(([]{}))");
-        bracketsBalanceVerification.verifyBracketsBalance("({[(]})");
-        bracketsBalanceVerification.verifyBracketsBalance("}{()[]");
+        BracketsBalanceVerifier bracketsBalanceVerifier =
+                new BracketsBalanceVerifier(TYPE_ROUND);
 
-        bracketsBalanceVerification.verifyBracketsBalance("a{}bc() []e");
+        bracketsBalanceVerifier.verifyBracketsBalance("");
+        bracketsBalanceVerifier.verifyBracketsBalance("((()))");
+        bracketsBalanceVerifier.verifyBracketsBalance(")(");
+
+        BracketsBalanceVerifier balanceVerifier =
+                new BracketsBalanceVerifier(TYPE_ROUND_SQUARE_CURLY);
+
+        balanceVerifier.verifyBracketsBalance("");
+        balanceVerifier.verifyBracketsBalance("(([]{}))");
+        balanceVerifier.verifyBracketsBalance("({[(]})");
+        balanceVerifier.verifyBracketsBalance("}{()[]");
+
+        balanceVerifier.verifyBracketsBalance("a{}bc() []e");
     }
 }
