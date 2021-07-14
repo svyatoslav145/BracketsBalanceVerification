@@ -10,23 +10,27 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static akvelonTestTaskOvsiy.BracketsBalanceVerification.INPUT_PATTERN;
+import static akvelonTestTaskOvsiy.VerifierType.TYPE_ROUND_SQUARE_CURLY;
 import static org.junit.jupiter.api.Assertions.*;
 
-class BracketsBalanceVerificationTest {
+class Test_ROUND_SQUARE_CURLY_BRACKETS_Verifier {
 
     private static final String EMPTY_STRING = "";
     private static final String INCORRECT_BRACKET_SEQUENCE = "()a_c[]# W";
     private static final String WRONG_FOURTH_BRACKET = "{[(]}";
     private static final String WRONG_FIRST_BRACKET = ")[]{}(";
-    private final BracketsBalanceVerification bracketsBalanceVerification =
-            new BracketsBalanceVerification();
+
+    private final BracketsBalanceVerifier bracketsBalanceVerifier =
+            new BracketsBalanceVerifier(TYPE_ROUND_SQUARE_CURLY);
+    private static final String INPUT_PATTERN = BracketsBalanceVerifier.getInputPattern(
+            TYPE_ROUND_SQUARE_CURLY.getOpenBrackets(),
+            TYPE_ROUND_SQUARE_CURLY.getCloseBrackets());
 
     @Test
     @DisplayName("Test with empty bracket sequence. Should be returned zero")
     void testWithEmptyBracketSequence() {
         //when
-        int returnedInt = bracketsBalanceVerification.verifyBracketsBalance(EMPTY_STRING);
+        int returnedInt = bracketsBalanceVerifier.verifyBracketsBalance(EMPTY_STRING);
         //then
         assertEquals(0, returnedInt);
     }
@@ -37,7 +41,7 @@ class BracketsBalanceVerificationTest {
     void testWithIncorrectBracketSequence() {
         //when
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> bracketsBalanceVerification
+                () -> bracketsBalanceVerifier
                         .verifyBracketsBalance(INCORRECT_BRACKET_SEQUENCE));
         //then
         assertEquals("A character(s): {a, _, c, #, space, W} does not belong " +
@@ -49,7 +53,7 @@ class BracketsBalanceVerificationTest {
     void testWithBalancedBracketSequences() {
         //then
         for (String s : balancedBracketSequences()) {
-            int returnedInt = bracketsBalanceVerification.verifyBracketsBalance(s);
+            int returnedInt = bracketsBalanceVerifier.verifyBracketsBalance(s);
 
             assertEquals(-1, returnedInt);
         }
@@ -60,7 +64,7 @@ class BracketsBalanceVerificationTest {
     void testWithNotBalancedBracketSequence_bracket4() {
         //when
         int incorrectBracketNumber =
-                bracketsBalanceVerification.verifyBracketsBalance(WRONG_FOURTH_BRACKET);
+                bracketsBalanceVerifier.verifyBracketsBalance(WRONG_FOURTH_BRACKET);
         //then
         assertEquals(4, incorrectBracketNumber);
     }
@@ -70,7 +74,7 @@ class BracketsBalanceVerificationTest {
     void testWithNotBalancedBracketSequence_bracket1() {
         //when
         int incorrectBracketNumber =
-                bracketsBalanceVerification.verifyBracketsBalance(WRONG_FIRST_BRACKET);
+                bracketsBalanceVerifier.verifyBracketsBalance(WRONG_FIRST_BRACKET);
         //then
         assertEquals(1, incorrectBracketNumber);
     }
@@ -79,14 +83,14 @@ class BracketsBalanceVerificationTest {
     @MethodSource("createCorrectBracketSequences")
     @DisplayName("Pattern test with correct symbols in bracket sequences")
     void testBracketSequenceRegexp_whenBracketSequencesCorrect(String correctSequence) {
-        assertTrue(correctSequence.matches(String.valueOf(INPUT_PATTERN)));
+        assertTrue(correctSequence.matches(INPUT_PATTERN));
     }
 
     @ParameterizedTest
     @MethodSource("createWrongBracketSequences")
     @DisplayName("Pattern test with wrong symbols in bracket sequences")
     void testBracketSequenceRegexp_whenBracketSequencesWrong(String wrongSequence) {
-        assertFalse(wrongSequence.matches(String.valueOf(INPUT_PATTERN)));
+        assertFalse(wrongSequence.matches(INPUT_PATTERN));
     }
 
     private List<String> balancedBracketSequences() {
